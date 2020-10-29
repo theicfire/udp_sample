@@ -7,8 +7,6 @@
 
 #include "timer.h"
 
-#define PORT 5940
-
 #define PACKET_CONTENT_SIZE 1300
 #define SERIALIZED_PACKET_SIZE PACKET_CONTENT_SIZE + 10
 

@@ -83,12 +83,18 @@ int main(const int argc, const char *argv[]) {
     return 1;
   }
 
+  if (argc != 2) {
+    printf("Usage: ./host <listen_port>\n");
+    return 1;
+  }
+  int port = atoi(argv[1]);
+
   struct sockaddr_in host_address;
   memset(&host_address, 0, sizeof(host_address));
 
   host_address.sin_family = AF_INET;
   host_address.sin_addr.s_addr = htonl(INADDR_ANY);
-  host_address.sin_port = htons(PORT);
+  host_address.sin_port = htons(port);
 
   if (bind(sock_fd, (struct sockaddr *)&host_address, sizeof(host_address)) <
       0) {

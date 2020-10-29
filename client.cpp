@@ -12,10 +12,6 @@
 
 #include "common.h"
 
-// #define HOST_ADDRESS "127.0.0.1"  // right now localhost
-//#define HOST_ADDRESS "147.75.49.83"  // collie1
-#define HOST_ADDRESS "147.75.70.99"  // devbox
-
 DroppedPacketMonitor packet_monitor;
 void accept_packet(const packet p) {
   packet_monitor.add_packet(p.sequence_id);
@@ -43,6 +39,14 @@ int main(const int argc, const char* argv[]) {
     perror("could not create socket");
     return 1;
   }
+  
+  if (argc != 3) {
+    printf("Usage: ./client <ip_address> <port>\n");
+    return 1;
+  }
+
+  const char* host_address_arg = argv[1];
+  int port_arg = atoi(argv[2]);
 
   /* bind it to all local addresses and pick any port number */
   struct sockaddr_in client_address;
@@ -70,8 +74,8 @@ int main(const int argc, const char* argv[]) {
   memset(&host_address, 0, sizeof(host_address));
 
   host_address.sin_family = AF_INET;
-  host_address.sin_port = htons(PORT);
-  if (inet_aton(HOST_ADDRESS, &host_address.sin_addr) == 0) {
+  host_address.sin_port = htons(port_arg);
+  if (inet_aton(host_address_arg, &host_address.sin_addr) == 0) {
     perror("provided host address in invalid");
     return 1;
   }
